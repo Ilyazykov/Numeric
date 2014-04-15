@@ -6,12 +6,14 @@ namespace Lab5.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public string WelcomeTitle { get; set; }
         public ObservableCollection<ChartPoint> ChartData { get; set; }
+        public object gettedValue { get; set; }
+        public object realValue { get; set; }
 
         public MainViewModel()
         {
-            WelcomeTitle = "test";
+            gettedValue = 10;
+            realValue = 10;
 
             ChartData = new ObservableCollection<ChartPoint>
             {
