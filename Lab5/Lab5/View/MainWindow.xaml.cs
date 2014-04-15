@@ -26,9 +26,5 @@ namespace Lab5
         {
             InitializeComponent();
         }
-
-        private void btnAddChart_Click(object sender, RoutedEventArgs e)
-        {
-        }
     }
 }
