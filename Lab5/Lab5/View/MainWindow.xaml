@@ -53,18 +53,10 @@
                         <TextBlock Text="{Binding RealValue}"
                                    Margin="20,0,0,5"/>
 
-                        <ComboBox SelectedIndex="0">
-                            <TextBlock Text="f(x)"/>
-                            <TextBlock Text="f(x)+cos(10x)"/>
-                            <TextBlock Text="f(x)+cos(100x)"/>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction
-                                        Command="{Binding ChangeFunctionCommand}"
-                                        CommandParameter="SelectedIndex"/>
-                                </i:EventTrigger> <!--TODO исправить -->
-                            </i:Interaction.Triggers>
-                        </ComboBox>                        
+                        <Button Content="f(x)" Command="{Binding MyFunctionCommand}"/>
+                        <Button Content="f(x)+cos(10x)" Command="{Binding FirstOscillatingFunctionCommand}"/>
+                        <Button Content="f(x)+cos(100x)" Command="{Binding SecondOscillatingFunctionCommand}"/>
+                                                 
                     </StackPanel>
                 </Grid>
             </TabItem>

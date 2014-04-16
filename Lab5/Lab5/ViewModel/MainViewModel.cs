@@ -26,22 +26,28 @@ namespace Lab5.ViewModel
 
         #region Comands
 
-        public RelayCommand<int> ChangeFunctionCommand { get; set; }
-
-        private void ChangeFunctionCommandExecutor(int selectedItem)
+        public RelayCommand MyFunctionCommand { get; set; }
+        private void MyFunctionCommandExecutor()
         {
-            switch (selectedItem)
-            {
-                case 0:
-                    _function = new MyFunction();
-                    break;
-                case 1:
-                    _function = new FirstOscillatingFunction();
-                    break;
-                case 2:
-                    _function = new SecondOscillatingFunction();
-                    break;
-            }
+            _function = new MyFunction();
+
+            GetRealValue();
+            GetChart();
+        }
+
+        public object FirstOscillatingFunctionCommand { get; set; }
+        private void FirstOscillatingFunctionCommandExecutor()
+        {
+            _function = new FirstOscillatingFunction();
+
+            GetRealValue();
+            GetChart();
+        }
+
+        public object SecondOscillatingFunctionCommand { get; set; }
+        private void SecondOscillatingFunctionCommandExecutor()
+        {
+            _function = new SecondOscillatingFunction();
 
             GetRealValue();
             GetChart();
@@ -54,12 +60,13 @@ namespace Lab5.ViewModel
         public MainViewModel()
         {
             GettedValue = 0; //TODO change
-            ChartData = new ObservableCollection<ChartPoint>();
 
             GetChart();
             GetRealValue();
 
-            ChangeFunctionCommand = new RelayCommand<int>(ChangeFunctionCommandExecutor);
+            MyFunctionCommand = new RelayCommand(MyFunctionCommandExecutor);
+            FirstOscillatingFunctionCommand = new RelayCommand(FirstOscillatingFunctionCommandExecutor);
+            SecondOscillatingFunctionCommand = new RelayCommand(SecondOscillatingFunctionCommandExecutor);
         }
 
         #endregion
@@ -74,7 +81,7 @@ namespace Lab5.ViewModel
 
         private void GetChart()
         {
-            ChartData.Clear();
+            ChartData = new ObservableCollection<ChartPoint>();
 
             var step = (end - begin) / 800;
             for (var x=begin; x<end; x+=step)
