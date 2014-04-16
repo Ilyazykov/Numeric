@@ -98,6 +98,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ChartPoint.cs" />
+    <Compile Include="Model\Functions\FirstOscillatingFunction.cs" />
+    <Compile Include="Model\Functions\IFunction.cs" />
+    <Compile Include="Model\Functions\MyFunction.cs" />
+    <Compile Include="Model\Functions\SecondOscillatingFunction.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="View\MainWindow.xaml">

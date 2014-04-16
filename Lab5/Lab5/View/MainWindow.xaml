@@ -1,47 +1,79 @@
 ﻿<Window x:Class="Lab5.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:charting="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
         Title="MainWindow" Width="1000" Height="600"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
-    
+
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        
-        <!--Charts-->
-        <charting:Chart Name="Charts" Grid.Column="0" Margin="3">
-            <charting:LineSeries 
-                IndependentValuePath="X"
-                DependentValuePath="Y"
-                ItemsSource="{Binding ChartData}"/>
-            <charting:Chart.Axes>
-                <charting:LinearAxis
-                    Orientation="X"
-                    Title="X"
-                    ShowGridLines="True"/>
-                <charting:LinearAxis 
-                    Orientation="Y"
-                    Title="Y"
-                    ShowGridLines="True"/>
-            </charting:Chart.Axes>
-        </charting:Chart>
-        
-        <!--Results-->
-        <StackPanel Grid.Column="1">
+        <TabControl Margin="5">
             
-            <TextBlock Text="Полученное значение интеграла:" 
-                       Margin="10, 10, 10, 5"/>
-            <TextBlock Text="{Binding gettedValue}"
-                       Margin="20,0,0,5"/>
+            <!--First task-->
+            <TabItem Header="Первая задача">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Charts-->
+                    <charting:Chart Name="Charts" Grid.Column="0" Margin="3">
+                        <charting:LineSeries IndependentValuePath="X" DependentValuePath="Y" ItemsSource="{Binding ChartData}">
+                            <charting:LineSeries.DataPointStyle>
+                                <Style TargetType="charting:LineDataPoint">
+                                    <Setter Property="Opacity" Value="0"/>
+                                    <Setter Property="Background" Value="Blue"/>
+                                </Style>
+                            </charting:LineSeries.DataPointStyle>
+                        </charting:LineSeries>
+                        <charting:Chart.Axes>
+                            <charting:LinearAxis
+                                Orientation="X"
+                                Title="X"
+                                ShowGridLines="True"/>
+                            <charting:LinearAxis 
+                                Orientation="Y"
+                                Title="Y"
+                                ShowGridLines="True"/>
+                        </charting:Chart.Axes>
+                    </charting:Chart>
+
+                    <!--Results-->
+                    <StackPanel Grid.Column="1">
+
+                        <TextBlock Text="Полученное значение интеграла:" 
+                                   Margin="10, 10, 10, 5"/>
+                        <TextBlock Text="{Binding GettedValue}"
+                                   Margin="20,0,0,5"/>
+
+                        <TextBlock Text="Истинное значение интеграла:" 
+                                   Margin="10, 10, 10, 5"/>
+                        <TextBlock Text="{Binding RealValue}"
+                                   Margin="20,0,0,5"/>
+
+                        <ComboBox SelectedIndex="0">
+                            <TextBlock Text="f(x)"/>
+                            <TextBlock Text="f(x)+cos(10x)"/>
+                            <TextBlock Text="f(x)+cos(100x)"/>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction
+                                        Command="{Binding ChangeFunctionCommand}"
+                                        CommandParameter="SelectedIndex"/>
+                                </i:EventTrigger> <!--TODO исправить -->
+                            </i:Interaction.Triggers>
+                        </ComboBox>                        
+                    </StackPanel>
+                </Grid>
+            </TabItem>
             
-            <TextBlock Text="Истинное значение интеграла:" 
-                       Margin="10, 10, 10, 5"/>
-            <TextBlock Text="{Binding realValue}"
-                       Margin="20,0,0,5"/>
-            
-        </StackPanel>
+            <!--Second task-->
+            <TabItem Header="Вторая задача">
+                
+            </TabItem>
+                     
+        </TabControl>
     </Grid>
 </Window>
