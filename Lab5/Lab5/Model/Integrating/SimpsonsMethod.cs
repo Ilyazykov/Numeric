@@ -25,9 +25,14 @@ namespace Lab5.Model.Integrating
 
         public override double IntegrateNumerical(double begin, double end, int numberOfSteps)
         {
-            //TODO
+            double dx = (end - begin) / numberOfSteps;
+            double res = 0;
 
-            return 0;
+            for (int i = 0; i < numberOfSteps; i++)
+            {
+                res += dx*(GetValue(begin + i*dx) + GetValue(begin + (i + 1)*dx) + 4*GetValue(begin + i*dx + dx/2))/6;
+            }
+            return res;
         }
     }
 }
