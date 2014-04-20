@@ -46,7 +46,7 @@
 
                         <TextBlock Text="Численное значение:" 
                                    Margin="10, 10, 10, 5"/>
-                        <TextBlock Text="{Binding GettedValueRectangles}"
+                        <TextBlock Text="{Binding GettedValue}"
                                    Margin="20,0,0,5"/>
 
                         <TextBlock Text="Точное значение:" 
@@ -54,12 +54,31 @@
                         <TextBlock Text="{Binding RealValue}"
                                    Margin="20,0,0,5"/>
 
-                        <xctk:IntegerUpDown Value="{Binding NumberOfPartitions}"/>
-                        
-                        <RadioButton Content="f(x)" Command="{Binding MyFunctionCommand}" IsChecked="True"/>
-                        <RadioButton Content="f(x)+cos(10x)" Command="{Binding FirstOscillatingFunctionCommand}"/>
-                        <RadioButton Content="f(x)+cos(100x)" Command="{Binding SecondOscillatingFunctionCommand}"/>
+                        <TextBlock Text="Погрешность:" 
+                                   Margin="10, 10, 10, 5"/>
+                        <TextBlock Text="{Binding Error}"
+                                   Margin="20,0,5,5"/>
 
+                        <xctk:IntegerUpDown Value="{Binding NumberOfPartitions}" Margin="4"/>
+
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="4">
+                            <StackPanel Margin="3">
+                                <TextBlock Text="Выберите функцию:" Margin="1,0,0,1"/>
+                                <RadioButton Content="f(x)" Command="{Binding MyFunctionCommand}" IsChecked="True"/>
+                                <RadioButton Content="f(x)+cos(10x)" Command="{Binding FirstOscillatingFunctionCommand}"/>
+                                <RadioButton Content="f(x)+cos(100x)" Command="{Binding SecondOscillatingFunctionCommand}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="4">
+                            <StackPanel Margin="3">
+                                <TextBlock Text="Выберите метод:" Margin="1,0,0,1"/>
+                                <RadioButton Content="Прямоугольников" Command="{Binding RectangleCommand}" IsChecked="True"/>
+                                <RadioButton Content="Трапеций" Command="{Binding TrapezoidalCommand}"/>
+                                <RadioButton Content="Симпсона" Command="{Binding SimpsonsCommand}"/>
+                            </StackPanel>
+                        </Border>
+                        
                     </StackPanel>
                 </Grid>
             </TabItem>

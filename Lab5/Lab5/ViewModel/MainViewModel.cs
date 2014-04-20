@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -11,10 +12,19 @@ namespace Lab5.ViewModel
         #region Properties
 
         public ObservableCollection<ChartPoint> ChartData { get; set; }
-        public object GettedValueRectangles { get; set; }
-        public object GettedValueTrapezoidal { get; set; }
-        public object GettedValueSimpsons { get; set; }
-        public object RealValue { get; set; }
+
+        private double _gettedValue;
+        public double GettedValue
+        {
+            get { return _gettedValue; }
+            set
+            {
+                _gettedValue = value; 
+                RaisePropertyChanged("Error");
+            }
+        }
+
+        public double RealValue { get; set; }
 
         private int _numberOfPartitions;
         public int NumberOfPartitions
@@ -23,8 +33,14 @@ namespace Lab5.ViewModel
             set
             {
                 _numberOfPartitions = value;
+                GetNumericalValue();
                 RaisePropertyChanged("NumberOfPartitions");
             }
+        }
+
+        public object Error
+        {
+            get { return Math.Abs(GettedValue - RealValue); }
         }
 
         #endregion
@@ -35,6 +51,8 @@ namespace Lab5.ViewModel
         private double end = 1.0;
         private Function _beginFunction;
         private Function _function;
+        
+
         public Function ChangeFunction
         {
             set
@@ -47,7 +65,7 @@ namespace Lab5.ViewModel
 
         #endregion
 
-        #region Comands
+        #region Commands
 
         public RelayCommand MyFunctionCommand { get; set; }
         private void MyFunctionCommandExecutor()
@@ -67,6 +85,34 @@ namespace Lab5.ViewModel
             ChangeFunction = new SecondOscillatingFunction();
         }
 
+        public RelayCommand RectangleCommand { get; set; }
+        private void RectangleCommandExecutor()
+        {
+            _function = new RectanleMethod(_beginFunction);
+
+            GetRealValue();
+            GetNumericalValue();
+        }
+
+        public RelayCommand TrapezoidalCommand { get; set; }
+        private void TrapezoidalCommandExecutor()
+        {
+            _function = new TrapezoidalMethod(_beginFunction);
+
+            GetRealValue();
+            GetNumericalValue();
+        }
+
+        public RelayCommand SimpsonsCommand { get; set; }
+
+        private void SimpsonsCommandExecutor()
+        {
+            _function = new SimpsonsMethod(_beginFunction);
+
+            GetRealValue();
+            GetNumericalValue();
+        }
+
         #endregion
 
         #region Constructor
@@ -82,6 +128,10 @@ namespace Lab5.ViewModel
             MyFunctionCommand = new RelayCommand(MyFunctionCommandExecutor);
             FirstOscillatingFunctionCommand = new RelayCommand(FirstOscillatingFunctionCommandExecutor);
             SecondOscillatingFunctionCommand = new RelayCommand(SecondOscillatingFunctionCommandExecutor);
+
+            RectangleCommand = new RelayCommand(RectangleCommandExecutor);
+            TrapezoidalCommand = new RelayCommand(TrapezoidalCommandExecutor);
+            SimpsonsCommand = new RelayCommand(SimpsonsCommandExecutor);
         }
 
         #endregion
@@ -92,15 +142,7 @@ namespace Lab5.ViewModel
         {
             GetChart(stepNumber);
             GetRealValue();
-            GetNumericalRectanglesValue();
-            GetNumericalTrapezoidal();
-            GetNumericalSimpsons();
-        }
-
-        private void GetNumericalSimpsons()
-        {
-            GettedValueSimpsons = 0;
-            //TODO
+            GetNumericalValue();
         }
 
         private void GetRealValue()
@@ -109,16 +151,10 @@ namespace Lab5.ViewModel
             RaisePropertyChanged("RealValue");
         }
 
-        private void GetNumericalRectanglesValue()
+        private void GetNumericalValue()
         {
-            GettedValueRectangles = _function.IntegrateNumerical(begin, end, NumberOfPartitions);
-            RaisePropertyChanged("GettedValueRectangles");
-        }
-
-        private void GetNumericalTrapezoidal()
-        {
-            //GettedValueTrapezoidal = _function.IntegrateNumericallyTrapezoidal(begin, end);
-            RaisePropertyChanged("GettedValueTrapezoidal");
+            GettedValue = _function.IntegrateNumerical(begin, end, NumberOfPartitions);
+            RaisePropertyChanged("GettedValue");
         }
 
         private void GetChart(int stepNumber)
