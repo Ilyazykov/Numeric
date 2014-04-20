@@ -100,6 +100,7 @@
     <Compile Include="Model\ChartPoint.cs" />
     <Compile Include="Model\Functions\FirstOscillatingFunction.cs" />
     <Compile Include="Model\Functions\Function.cs" />
+    <Compile Include="Model\Functions\GeneratedFunctions.cs" />
     <Compile Include="Model\Functions\MyFunction.cs" />
     <Compile Include="Model\Functions\SecondOscillatingFunction.cs" />
     <Compile Include="Model\Integrating\IntegrateDecorator.cs" />

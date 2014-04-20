@@ -9,6 +9,29 @@ namespace Lab5.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        #region Constructor
+
+        public MainViewModel()
+        {
+            _beginFunction = new MyFunction();
+            _function = new RectanleMethod(_beginFunction);
+
+            NumberOfPartitions = 300;
+            GetValues(200);
+
+            MyFunctionCommand = new RelayCommand(MyFunctionCommandExecutor);
+            FirstOscillatingFunctionCommand = new RelayCommand(FirstOscillatingFunctionCommandExecutor);
+            SecondOscillatingFunctionCommand = new RelayCommand(SecondOscillatingFunctionCommandExecutor);
+
+            RectangleCommand = new RelayCommand(RectangleCommandExecutor);
+            TrapezoidalCommand = new RelayCommand(TrapezoidalCommandExecutor);
+            SimpsonsCommand = new RelayCommand(SimpsonsCommandExecutor);
+        }
+
+        #endregion
+
+        #region FirstTask
+
         #region Properties
 
         public ObservableCollection<ChartPoint> ChartData { get; set; }
@@ -115,27 +138,6 @@ namespace Lab5.ViewModel
 
         #endregion
 
-        #region Constructor
-
-        public MainViewModel()
-        {
-            _beginFunction = new MyFunction();
-            _function = new RectanleMethod(_beginFunction);
-
-            NumberOfPartitions = 300;
-            GetValues(200);
-
-            MyFunctionCommand = new RelayCommand(MyFunctionCommandExecutor);
-            FirstOscillatingFunctionCommand = new RelayCommand(FirstOscillatingFunctionCommandExecutor);
-            SecondOscillatingFunctionCommand = new RelayCommand(SecondOscillatingFunctionCommandExecutor);
-
-            RectangleCommand = new RelayCommand(RectangleCommandExecutor);
-            TrapezoidalCommand = new RelayCommand(TrapezoidalCommandExecutor);
-            SimpsonsCommand = new RelayCommand(SimpsonsCommandExecutor);
-        }
-
-        #endregion
-
         #region Common functions
 
         private void GetValues(int stepNumber = 400)
@@ -171,6 +173,14 @@ namespace Lab5.ViewModel
 
             RaisePropertyChanged("ChartData");
         }
+
+
+
+        #endregion
+
+        #endregion
+
+        #region SecondTask
 
 
 
