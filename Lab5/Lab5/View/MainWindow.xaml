@@ -57,9 +57,11 @@
                         <TextBlock Text="Погрешность:" 
                                    Margin="10, 10, 10, 5"/>
                         <TextBlock Text="{Binding Error}"
-                                   Margin="20,0,5,5"/>
+                                   Margin="10,0,5,5"/>
 
-                        <xctk:IntegerUpDown Value="{Binding NumberOfPartitions}" Margin="4"/>
+                        <TextBlock Text="Кол-во разбиений:" 
+                                   Margin="5, 10, 10, 5"/>
+                        <xctk:IntegerUpDown Value="{Binding NumberOfPartitions}" Margin="10,0,5,5"/>
 
                         <Border BorderBrush="Black" BorderThickness="1" Margin="4">
                             <StackPanel Margin="3">
