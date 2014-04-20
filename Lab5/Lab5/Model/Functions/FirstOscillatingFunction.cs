@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Lab5.Model
 {
-    class FirstOscillatingFunction : IFunction
+    class FirstOscillatingFunction : Function
     {
-        public double GetValue(double x)
+        public override double GetValue(double x)
         {
             var temp = new MyFunction();
             return temp.GetValue(x) + Math.Cos(10*x);
         }
 
-        public double IntegrateAnalitical(double begin, double end)
+        public override double IntegrateAnalitical(double begin, double end)
         {
             var temp = new MyFunction();
             return temp.IntegrateAnalitical(begin, end) + (Math.Sin(10*end)-Math.Sin(10*begin))/10;

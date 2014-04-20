@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Windows.Media.Animation;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Lab5.Model;
@@ -11,7 +10,9 @@ namespace Lab5.ViewModel
         #region Properties
 
         public ObservableCollection<ChartPoint> ChartData { get; set; }
-        public object GettedValue { get; set; }
+        public object GettedValueRectangles { get; set; }
+        public object GettedValueTrapezoidal { get; set; }
+        public object GettedValueSimpsons { get; set; }
         public object RealValue { get; set; }
 
         #endregion
@@ -20,7 +21,8 @@ namespace Lab5.ViewModel
 
         private double begin = 0.0;
         private double end = 1.0;
-        private IFunction _function = new MyFunction();
+        private Function _function = new MyFunction();
+         
 
         #endregion
 
@@ -30,27 +32,22 @@ namespace Lab5.ViewModel
         private void MyFunctionCommandExecutor()
         {
             _function = new MyFunction();
-
-            GetRealValue();
-            GetChart();
+            GetValues();
         }
 
         public object FirstOscillatingFunctionCommand { get; set; }
         private void FirstOscillatingFunctionCommandExecutor()
         {
             _function = new FirstOscillatingFunction();
-
-            GetRealValue();
-            GetChart();
+            GetValues();
         }
 
         public object SecondOscillatingFunctionCommand { get; set; }
+
         private void SecondOscillatingFunctionCommandExecutor()
         {
             _function = new SecondOscillatingFunction();
-
-            GetRealValue();
-            GetChart();
+            GetValues();
         }
 
         #endregion
@@ -59,10 +56,9 @@ namespace Lab5.ViewModel
 
         public MainViewModel()
         {
-            GettedValue = 0; //TODO change
+            GettedValueRectangles = 0; //TODO change
 
-            GetChart();
-            GetRealValue();
+            GetValues(200);
 
             MyFunctionCommand = new RelayCommand(MyFunctionCommandExecutor);
             FirstOscillatingFunctionCommand = new RelayCommand(FirstOscillatingFunctionCommandExecutor);
@@ -73,24 +69,55 @@ namespace Lab5.ViewModel
 
         #region Common functions
 
+        private void GetValues(int stepNumber = 400)
+        {
+            GetChart(stepNumber);
+            GetRealValue();
+            GetNumericalRectanglesValue();
+            GetNumericalTrapezoidal();
+            GetNumericalSimpsons();
+        }
+
+        private void GetNumericalSimpsons()
+        {
+            GettedValueSimpsons = 0;
+            //TODO
+        }
+
         private void GetRealValue()
         {
             RealValue = _function.IntegrateAnalitical(begin, end);
             RaisePropertyChanged("RealValue");
         }
 
-        private void GetChart()
+        private void GetNumericalRectanglesValue()
+        {
+            GettedValueRectangles = _function.IntegrateNumericallyRectangles(begin, end);
+            RaisePropertyChanged("GettedValueRectangles");
+        }
+
+        private void GetNumericalTrapezoidal()
+        {
+            GettedValueTrapezoidal = _function.IntegrateNumericallyTrapezoidal(begin, end);
+            RaisePropertyChanged("GettedValueTrapezoidal");
+        }
+
+        private void GetChart(int stepNumber)
         {
             ChartData = new ObservableCollection<ChartPoint>();
 
-            var step = (end - begin) / 800;
-            for (var x=begin; x<end; x+=step)
+            var dx = (end - begin) / stepNumber;
+            for (int i=0; i<stepNumber; i++)
             {
+                double x = begin + i*dx;
                 ChartData.Add(new ChartPoint(x, _function.GetValue(x)));
             }
+            ChartData.Add(new ChartPoint(end, _function.GetValue(end)));
 
             RaisePropertyChanged("ChartData");
         }
+
+
 
         #endregion
     }

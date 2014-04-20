@@ -43,9 +43,19 @@
                     <!--Results-->
                     <StackPanel Grid.Column="1">
 
-                        <TextBlock Text="Полученное значение интеграла:" 
+                        <TextBlock Text="Метод прямоугольников:" 
                                    Margin="10, 10, 10, 5"/>
-                        <TextBlock Text="{Binding GettedValue}"
+                        <TextBlock Text="{Binding GettedValueRectangles}"
+                                   Margin="20,0,0,5"/>
+
+                        <TextBlock Text="Метод трапеций:" 
+                                   Margin="10, 10, 10, 5"/>
+                        <TextBlock Text="{Binding GettedValueTrapezoidal}"
+                                   Margin="20,0,0,5"/>
+
+                        <TextBlock Text="Метод Симпсона:" 
+                                   Margin="10, 10, 10, 5"/>
+                        <TextBlock Text="{Binding GettedValueSimpsons}"
                                    Margin="20,0,0,5"/>
 
                         <TextBlock Text="Истинное значение интеграла:" 

@@ -6,21 +6,16 @@ using System.Threading.Tasks;
 
 namespace Lab5.Model
 {
-    class MyFunction : IFunction
+    class MyFunction : Function
     {
-        public double GetValue(double x)
+        public override double GetValue(double x)
         {
             return 1/(1 + x);
         }
 
-        public double IntegrateAnalitical(double begin, double end)
+        public override double IntegrateAnalitical(double begin, double end)
         {
             return Math.Log(end+1) - Math.Log(begin+1);
-        }
-
-        public double IntegrateNumerically(double begin, double end)
-        {
-            return 10; //TODO change
         }
     }
 }
