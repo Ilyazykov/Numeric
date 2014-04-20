@@ -107,6 +107,7 @@
     <Compile Include="Model\Integrating\RectanleMethod.cs" />
     <Compile Include="Model\Integrating\SimpsonsMethod.cs" />
     <Compile Include="Model\Integrating\TrapezoidalMethod.cs" />
+    <Compile Include="Model\DataForTable.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="View\MainWindow.xaml">

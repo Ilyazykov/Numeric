@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Lab5.Model;
+using Lab5.Model.Functions;
 using Lab5.Model.Integrating;
 
 namespace Lab5.ViewModel
@@ -13,6 +14,7 @@ namespace Lab5.ViewModel
 
         public MainViewModel()
         {
+            //First
             _beginFunction = new MyFunction();
             _function = new RectanleMethod(_beginFunction);
 
@@ -26,7 +28,19 @@ namespace Lab5.ViewModel
             RectangleCommand = new RelayCommand(RectangleCommandExecutor);
             TrapezoidalCommand = new RelayCommand(TrapezoidalCommandExecutor);
             SimpsonsCommand = new RelayCommand(SimpsonsCommandExecutor);
+
+            //Second
+            TerribleFunction = new GeneratedFunctions();
+            FillInTheTable();
+
+            GenerateFunctionCommand = new RelayCommand(GenerateFunctionCommandExecutor);
+
+            SecondRectangleCommand = new RelayCommand(SecondRectangleCommandExecutor);
+            SecondTrapezoidalCommand = new RelayCommand(SecondTrapezoidalCommandExecutor);
+            SecondSimpsonsCommand = new RelayCommand(SecondSimpsonsCommandExecutor);
         }
+
+        
 
         #endregion
 
@@ -182,7 +196,66 @@ namespace Lab5.ViewModel
 
         #region SecondTask
 
+        #region Fields
 
+        public Function TerribleFunction { get; set; }
+        public Function IntegratedTerribleFunction { get; set; }
+
+        #endregion
+
+        #region Properties
+
+        public ObservableCollection<DataForTable> Table { get; set; }
+        public double Alpha { get; set; }
+
+        #endregion
+
+        #region Commands
+
+        public RelayCommand GenerateFunctionCommand { get; set; }
+        private void GenerateFunctionCommandExecutor()
+        {
+            TerribleFunction = new GeneratedFunctions();
+            FillInTheTable();
+        }
+
+        public RelayCommand SecondRectangleCommand { get; set; }
+        private void SecondRectangleCommandExecutor()
+        {
+            IntegratedTerribleFunction = new RectanleMethod(TerribleFunction);
+        }
+
+        public RelayCommand SecondTrapezoidalCommand { get; set; }
+        private void SecondTrapezoidalCommandExecutor()
+        {
+            IntegratedTerribleFunction = new TrapezoidalMethod(TerribleFunction);
+        }
+
+        public RelayCommand SecondSimpsonsCommand { get; set; }
+
+        private void SecondSimpsonsCommandExecutor()
+        {
+            IntegratedTerribleFunction = new SimpsonsMethod(TerribleFunction);
+        }
+
+        #endregion
+
+        #region Common functions
+
+        void FillInTheTable()
+        {
+            Table = new ObservableCollection<DataForTable>();
+            for (int i = 0; i < 14; i++)
+            {
+                var temp = new DataForTable(TerribleFunction.A[i], TerribleFunction.B[i]);
+                Table.Add(temp);
+            }
+            Alpha = TerribleFunction.Alpha;
+            RaisePropertyChanged("Alpha");
+            RaisePropertyChanged("Table");
+        }
+
+        #endregion
 
         #endregion
     }

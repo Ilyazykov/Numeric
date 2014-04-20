@@ -1,31 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Lab5.Model.Functions
 {
-    class GeneratedFunctions : Function
+    public class GeneratedFunctions : Function
     {
-        public List<double> A { get; private set; }
-        public List<double> B { get; private set; }
-        public double Alpha { get; private set; }
-
-        public double X { get; set; }
-
         public GeneratedFunctions()
         {
             var random = new Random();
 
-            B = new List<double>(14);
-            A = new List<double>(14);
+            //A = new List<double>();
+            A = new List<double>();
+            B = new List<double>();
             
             Alpha = random.NextDouble();
             for (int i = 0; i < 14; i++)
             {
-                A[i] = random.NextDouble()*2 - 1;
-                B[i] = random.NextDouble()*2 - 1;
+                A.Add(random.NextDouble()*2 - 1);
+                B.Add(random.NextDouble()*2 - 1);
             }
             X = 0; //TODO изменение x
         }

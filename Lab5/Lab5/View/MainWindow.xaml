@@ -86,10 +86,63 @@
             </TabItem>
             
             <!--Second task-->
-            <TabItem Header="Вторая задача">
+            <TabItem Header="Вторая задача (функция)">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Charts-->
+                    <charting:Chart Name="ChartsSecondTask" Grid.Column="0" Margin="3">
+                        <charting:LineSeries IndependentValuePath="X" DependentValuePath="Y"> <!--TODO binding -->
+                            <charting:LineSeries.DataPointStyle>
+                                <Style TargetType="charting:LineDataPoint">
+                                    <Setter Property="Opacity" Value="0"/>
+                                    <Setter Property="Background" Value="Blue"/>
+                                </Style>
+                            </charting:LineSeries.DataPointStyle>
+                        </charting:LineSeries>
+                        <charting:Chart.Axes>
+                            <charting:LinearAxis
+                                Orientation="X"
+                                Title="g(x)"
+                                ShowGridLines="True"/>
+                            <charting:LinearAxis 
+                                Orientation="Y"
+                                Title="Y"
+                                ShowGridLines="True"/>
+                        </charting:Chart.Axes>
+                    </charting:Chart>
+
+                    <!--Results-->
+                    <StackPanel Grid.Column="1">
+                        
+                        <TextBlock Text="Коэффициенты:"/>
+                        <DataGrid ItemsSource="{Binding Table}" MaxColumnWidth="100"/>
+                        
+                        <TextBlock Text="Альфа = "/>
+                        <TextBlock Text="{Binding Alpha}"/>
+                        
+                        <Button Content="Generate" Command="{Binding GenerateFunctionCommand}"/>
+                        
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="4">
+                            <StackPanel Margin="3">
+                                <TextBlock Text="Выберите метод:" Margin="1,0,0,1"/>
+                                <RadioButton Content="Прямоугольников" Command="{Binding SecondRectangleCommand}" IsChecked="True"/>
+                                <RadioButton Content="Трапеций" Command="{Binding SecondTrapezoidalCommand}"/>
+                                <RadioButton Content="Симпсона" Command="{Binding SecondSimpsonsCommand}"/>
+                            </StackPanel>
+                        </Border>
+                        
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Вторая задача (трудоёмкость)">
                 
             </TabItem>
-                     
+
         </TabControl>
     </Grid>
 </Window>
