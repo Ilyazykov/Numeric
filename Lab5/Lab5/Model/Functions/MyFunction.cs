@@ -17,5 +17,15 @@ namespace Lab5.Model
         {
             return Math.Log(end+1) - Math.Log(begin+1);
         }
+
+        public override double IntegrateNumerical(double begin, double end, int numberOfSteps)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void ChangeFunction(Function function)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

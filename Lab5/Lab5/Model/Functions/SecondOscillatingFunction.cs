@@ -20,9 +20,14 @@ namespace Lab5.Model
             return temp.IntegrateAnalitical(begin, end) + (Math.Sin(100 * end) - Math.Sin(100 * begin)) / 100;
         }
 
-        public double IntegrateNumerically(double begin, double end)
+        public override double IntegrateNumerical(double begin, double end, int numberOfSteps)
         {
-            return 10; //TODO change
+            throw new NotImplementedException();
+        }
+
+        public override void ChangeFunction(Function function)
+        {
+            throw new NotImplementedException();
         }
     }
 }

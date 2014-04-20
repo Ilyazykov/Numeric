@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lab5.Model
+namespace Lab5.Model.Integrating
 {
-    class FirstOscillatingFunction : Function
+    public class IntegrateDecorator : Function
     {
+        public Function MyFunction { get; set; }
+
         public override double GetValue(double x)
         {
-            var temp = new MyFunction();
-            return temp.GetValue(x) + Math.Cos(10*x);
+            throw new NotImplementedException();
         }
 
         public override double IntegrateAnalitical(double begin, double end)
         {
-            var temp = new MyFunction();
-            return temp.IntegrateAnalitical(begin, end) + (Math.Sin(10*end)-Math.Sin(10*begin))/10;
+            throw new NotImplementedException();
         }
 
         public override double IntegrateNumerical(double begin, double end, int numberOfSteps)
@@ -27,7 +27,7 @@ namespace Lab5.Model
 
         public override void ChangeFunction(Function function)
         {
-            throw new NotImplementedException();
+            MyFunction = function;
         }
     }
 }

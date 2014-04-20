@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:charting="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         Title="MainWindow" Width="1000" Height="600"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
@@ -43,25 +44,17 @@
                     <!--Results-->
                     <StackPanel Grid.Column="1">
 
-                        <TextBlock Text="Метод прямоугольников:" 
+                        <TextBlock Text="Численное значение:" 
                                    Margin="10, 10, 10, 5"/>
                         <TextBlock Text="{Binding GettedValueRectangles}"
                                    Margin="20,0,0,5"/>
 
-                        <TextBlock Text="Метод трапеций:" 
-                                   Margin="10, 10, 10, 5"/>
-                        <TextBlock Text="{Binding GettedValueTrapezoidal}"
-                                   Margin="20,0,0,5"/>
-
-                        <TextBlock Text="Метод Симпсона:" 
-                                   Margin="10, 10, 10, 5"/>
-                        <TextBlock Text="{Binding GettedValueSimpsons}"
-                                   Margin="20,0,0,5"/>
-
-                        <TextBlock Text="Истинное значение интеграла:" 
+                        <TextBlock Text="Точное значение:" 
                                    Margin="10, 10, 10, 5"/>
                         <TextBlock Text="{Binding RealValue}"
                                    Margin="20,0,0,5"/>
+
+                        <xctk:IntegerUpDown Value="{Binding NumberOfPartitions}"/>
                         
                         <RadioButton Content="f(x)" Command="{Binding MyFunctionCommand}" IsChecked="True"/>
                         <RadioButton Content="f(x)+cos(10x)" Command="{Binding FirstOscillatingFunctionCommand}"/>

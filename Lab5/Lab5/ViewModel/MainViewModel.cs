@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Lab5.Model;
+using Lab5.Model.Integrating;
 
 namespace Lab5.ViewModel
 {
@@ -15,14 +16,34 @@ namespace Lab5.ViewModel
         public object GettedValueSimpsons { get; set; }
         public object RealValue { get; set; }
 
+        private int _numberOfPartitions;
+        public int NumberOfPartitions
+        {
+            get { return _numberOfPartitions; }
+            set
+            {
+                _numberOfPartitions = value;
+                RaisePropertyChanged("NumberOfPartitions");
+            }
+        }
+
         #endregion
 
         #region Fields
 
         private double begin = 0.0;
         private double end = 1.0;
-        private Function _function = new MyFunction();
-         
+        private Function _beginFunction;
+        private Function _function;
+        public Function ChangeFunction
+        {
+            set
+            {
+                _beginFunction = value;
+                _function.ChangeFunction(value);
+                GetValues();
+            }
+        }
 
         #endregion
 
@@ -31,23 +52,19 @@ namespace Lab5.ViewModel
         public RelayCommand MyFunctionCommand { get; set; }
         private void MyFunctionCommandExecutor()
         {
-            _function = new MyFunction();
-            GetValues();
+            ChangeFunction = new MyFunction();
         }
 
         public object FirstOscillatingFunctionCommand { get; set; }
         private void FirstOscillatingFunctionCommandExecutor()
         {
-            _function = new FirstOscillatingFunction();
-            GetValues();
+            ChangeFunction = new FirstOscillatingFunction();
         }
 
         public object SecondOscillatingFunctionCommand { get; set; }
-
         private void SecondOscillatingFunctionCommandExecutor()
         {
-            _function = new SecondOscillatingFunction();
-            GetValues();
+            ChangeFunction = new SecondOscillatingFunction();
         }
 
         #endregion
@@ -56,8 +73,10 @@ namespace Lab5.ViewModel
 
         public MainViewModel()
         {
-            GettedValueRectangles = 0; //TODO change
+            _beginFunction = new MyFunction();
+            _function = new RectanleMethod(_beginFunction);
 
+            NumberOfPartitions = 300;
             GetValues(200);
 
             MyFunctionCommand = new RelayCommand(MyFunctionCommandExecutor);
@@ -92,13 +111,13 @@ namespace Lab5.ViewModel
 
         private void GetNumericalRectanglesValue()
         {
-            GettedValueRectangles = _function.IntegrateNumericallyRectangles(begin, end);
+            GettedValueRectangles = _function.IntegrateNumerical(begin, end, NumberOfPartitions);
             RaisePropertyChanged("GettedValueRectangles");
         }
 
         private void GetNumericalTrapezoidal()
         {
-            GettedValueTrapezoidal = _function.IntegrateNumericallyTrapezoidal(begin, end);
+            //GettedValueTrapezoidal = _function.IntegrateNumericallyTrapezoidal(begin, end);
             RaisePropertyChanged("GettedValueTrapezoidal");
         }
 
