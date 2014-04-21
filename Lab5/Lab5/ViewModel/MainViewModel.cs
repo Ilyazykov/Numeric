@@ -203,7 +203,18 @@ namespace Lab5.ViewModel
         private GeneratedFunctions _terribleFunction;
         private Function _numericFunction;
         private AdaptiveQuadrature _quadrature;
-        private int _functionPartitions = 10;
+        
+        #endregion
+
+        #region Properties
+
+        public ObservableCollection<DataForTable> Table { get; set; }
+        public double Alpha { get; set; }
+
+        public ObservableCollection<ChartPoint> ChartTerribleFunction { get; set; }
+        public ObservableCollection<ChartPoint> ChartComplexity { get; set; }
+
+        private int _functionPartitions = 200;
         public int FunctionPartitions
         {
             get { return _functionPartitions; }
@@ -214,7 +225,7 @@ namespace Lab5.ViewModel
             }
         }
 
-        private int _numberOfPointsTerribleFunction = 10;
+        private int _numberOfPointsTerribleFunction = 200;
         public int NumberOfPointsTerribleFunction
         {
             get { return _numberOfPointsTerribleFunction; }
@@ -235,17 +246,6 @@ namespace Lab5.ViewModel
                 RaisePropertyChanged("Eps");
             }
         }
-
-        #endregion
-
-        #region Properties
-
-        
-
-        public ObservableCollection<DataForTable> Table { get; set; }
-        public double Alpha { get; set; }
-
-        public ObservableCollection<ChartPoint> ChartTerribleFunction { get; set; }
 
         #endregion
 
@@ -303,6 +303,7 @@ namespace Lab5.ViewModel
         private void GetTerribleChart(int stepNumber)
         {
             ChartTerribleFunction = new ObservableCollection<ChartPoint>();
+            ChartComplexity = new ObservableCollection<ChartPoint>();
 
             var dx = (end - begin) / stepNumber;
             for (int i = 0; i < stepNumber; i++)
@@ -313,10 +314,11 @@ namespace Lab5.ViewModel
                 _quadrature.X = x;
                 double y = _quadrature.GetValue(-Math.PI/2, Math.PI/2, Eps, FunctionPartitions, ref numberOfCalls);
                 ChartTerribleFunction.Add(new ChartPoint(x, y));
+                ChartComplexity.Add(new ChartPoint(x, numberOfCalls));
             }
-            //ChartData.Add(new ChartPoint(end, _function.GetValue(end)));
 
             RaisePropertyChanged("ChartTerribleFunction");
+            RaisePropertyChanged("ChartComplexity");
         }
 
         #endregion
