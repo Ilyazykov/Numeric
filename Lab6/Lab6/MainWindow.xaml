@@ -1,8 +1,41 @@
 ﻿<Window x:Class="Lab6.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        Title="MainWindow" Height="350" Width="525"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid>
-        
+        <TabControl>
+            <TabItem Header="Тестовая задача">
+            </TabItem>
+            <TabItem Header="Основная задача №1">
+                <chartingToolkit:Chart>
+                    <chartingToolkit:LineSeries
+                        IndependentValuePath="X"
+                        DependentValuePath="Y"
+                        ItemsSource="{Binding ChartData}">
+                        <chartingToolkit:LineSeries.DataPointStyle>
+                            <Style TargetType="chartingToolkit:LineDataPoint">
+                                <Setter Property="Opacity" Value="0"/>
+                                <Setter Property="Background" Value="Blue"/>
+                            </Style>
+                        </chartingToolkit:LineSeries.DataPointStyle>
+                    </chartingToolkit:LineSeries>
+                    <chartingToolkit:Chart.Axes>
+                        <chartingToolkit:LinearAxis
+                            Orientation="X"
+                            Title="X"
+                            ShowGridLines="True"/>
+                        <chartingToolkit:LinearAxis
+                            Orientation="Y"
+                            Title="Y"
+                            ShowGridLines="True"/>
+                    </chartingToolkit:Chart.Axes>
+                </chartingToolkit:Chart>
+            </TabItem>
+            <TabItem Header="Основная задача №2">
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </Window>
