@@ -1,40 +1,109 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.CodeDom.Compiler;
+using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Lab6.Model;
+using Lab6.Model.DifferentialEquation;
+using Xceed.Wpf.Toolkit;
 
 namespace Lab6.ViewModel
 {
     public class TestTaskViewModel : ViewModelBase
     {
-        public ObservableCollection<ChartPoint> ChartData { get; set; }
+        public ObservableCollection<ChartPoint> AnaliticalChartData { get; set; }
+        public ObservableCollection<ChartPoint> NumericalChartData { get; set; }
         public ObservableCollection<TestTableData> ResultTable { get; set; }
+        public double Y0 { get; set; }
+        public int MaximumNumberOfIteration { get; set; }
 
-        public TestTaskViewModel()
+        private bool _isFixedStep;
+        public bool IsFixedStep
         {
-            GetFakeChartData();
+            get { return _isFixedStep; }
+            set
+            {
+                _isFixedStep = value;
+                RaisePropertyChanged("IsFixedStep");
+            }
+        }
+        public double StepSize { get; set; }
+
+        public RelayCommand СalculationCommand { get; set; }
+        private void СalculationCommandExecutor()
+        {
+            GetChartData();
             GetFakeTable();
         }
 
-        private void GetFakeChartData()
+        private DiferentialEquation _equation;
+
+        public TestTaskViewModel()
         {
-            ChartData = new ObservableCollection<ChartPoint>();
+            Y0 = 1;
+            MaximumNumberOfIteration = 10;
+            IsFixedStep = true;
+            StepSize = 1;
+            
+            _equation  = new TestTask(Y0);
 
-            ChartData.Add(new ChartPoint(1, 1));
-            ChartData.Add(new ChartPoint(2, 2));
-            ChartData.Add(new ChartPoint(3, 3));
-            ChartData.Add(new ChartPoint(4, 4));
+            СalculationCommandExecutor();
 
-            RaisePropertyChanged("ChartData");
+            СalculationCommand = new RelayCommand(СalculationCommandExecutor);
+        }
+
+        private void GetChartData()
+        {/*
+            AnaliticalChartData = new ObservableCollection<ChartPoint>();
+
+            var dx = (End - Begin) / NumberOfPartitions;
+            double y;
+            for (int i = 0; i < NumberOfPartitions; i++)
+            {
+                double x = Begin + i*dx;
+                y = _equation.GetAnaliticalValue(x);
+                AnaliticalChartData.Add(new ChartPoint(x, y));
+            }
+
+
+            NumericalChartData = new ObservableCollection<ChartPoint>();
+            y = Y0;
+            NumericalChartData.Add(new ChartPoint(Begin, y));
+            for (int i = 1; i < NumberOfPartitions; i++)
+            {
+                double xPrev = Begin + (i-1) * dx;
+                double yPrev = y;
+                double x = Begin + i * dx;
+                y = _equation.GetNumericalValue(x, xPrev, yPrev);
+                NumericalChartData.Add(new ChartPoint(x, y));
+            }
+
+            RaisePropertyChanged("AnaliticalChartData");
+            RaisePropertyChanged("NumericalChartData");*/
         }
 
         private void GetFakeTable()
         {
+            /*
             ResultTable = new ObservableCollection<TestTableData>();
 
-            ResultTable.Add(new TestTableData(1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
-            ResultTable.Add(new TestTableData(1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+            for (int i = 1; i < NumberOfPartitions; i++)
+            {
+                var temp = new TestTableData();
+                temp.X = NumericalChartData[i].X;
+                temp.V = NumericalChartData[i].Y;
+                //temp.V2 = NumericalChartData[i].Y;
+                //temp.ErrorVv2 = temp.V - temp.V2;
+                //temp.Ele =
+                temp.H = temp.X - AnaliticalChartData[i-1].X;
+                //temp.C1
+                //temp.C2
+                temp.U = AnaliticalChartData[i].Y;
+                temp.ErrorUv = temp.V - temp.U;
 
-            RaisePropertyChanged("ResultTable");
+                ResultTable.Add(temp);
+            }
+
+            RaisePropertyChanged("ResultTable");*/
         }
     }
 }

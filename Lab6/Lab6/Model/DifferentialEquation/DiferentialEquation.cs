@@ -14,7 +14,7 @@
         public abstract double F(double x, double y);
         public abstract double GetAnaliticalValue(double x);
 
-        double GetNumericalValue(double x, double xPrev, double yPrev)
+        public double GetNumericalValue(double x, double xPrev, double yPrev)
         {
             double dx = x - xPrev;
 

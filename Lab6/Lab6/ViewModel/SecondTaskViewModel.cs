@@ -24,7 +24,7 @@ namespace Lab6.ViewModel
             ChartData.Add(new ChartPoint(3, 3));
             ChartData.Add(new ChartPoint(4, 2));
 
-            RaisePropertyChanged("ChartData");
+            RaisePropertyChanged("AnaliticalChartData");
         }
 
         private void GetFakeTable()

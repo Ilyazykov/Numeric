@@ -19,6 +19,8 @@ namespace Lab6.Model
         public double U { get; set; }
         public double ErrorUv { get; set; }
 
+        public TestTableData() { }
+
         public TestTableData(double x, double v, double v2, double errorVv2, double ele, double h, double c1, double c2, double u,
             double errorUv)
         {
