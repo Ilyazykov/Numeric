@@ -27,7 +27,7 @@
                         <charting:LineSeries Title="Numerical" IndependentValuePath="X" DependentValuePath="Y" ItemsSource="{Binding NumericalChartData}">
                             <charting:LineSeries.DataPointStyle>
                                 <Style TargetType="charting:LineDataPoint">
-                                    <Setter Property="Opacity" Value="0"/>
+                                    <Setter Property="Opacity" Value="0.1"/>
                                     <Setter Property="Background" Value="Red"/>
                                 </Style>
                             </charting:LineSeries.DataPointStyle>
@@ -74,21 +74,9 @@
                                 Minimum="0"
                                 Margin="10,0,5,0"/>
 
-            <TextBlock Text="E гр"
-                       Margin="10, 10, 10, 5"/>
-            <xctk:DoubleUpDown Value="{Binding EpsilonBorder}" 
-                                Minimum="0"
-                                Margin="10,0,5,0"/>
-
             <TextBlock Text="E"
                        Margin="10, 10, 10, 5"/>
             <xctk:DoubleUpDown Value="{Binding EpsilonUp}" 
-                                Minimum="0"
-                                Margin="10,0,5,0"/>
-
-            <TextBlock Text="Emin"
-                       Margin="10, 10, 10, 5"/>
-            <xctk:DoubleUpDown Value="{Binding EpsilonMin}" 
                                 Minimum="0"
                                 Margin="10,0,5,0"/>
 

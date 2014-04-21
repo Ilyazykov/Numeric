@@ -16,9 +16,7 @@ namespace Lab6.ViewModel
         public ObservableCollection<TestTableData> ResultTable { get; set; }
         public double Y0 { get; set; }
         public int MaximumNumberOfIteration { get; set; }
-        public double EpsilonBorder { get; set; }
         public double EpsilonUp { get; set; }
-        public double EpsilonMin { get; set; }
 
         private bool _isFixedStep;
         public bool IsFixedStep
@@ -48,9 +46,7 @@ namespace Lab6.ViewModel
             MaximumNumberOfIteration = 10;
             IsFixedStep = true;
             StepSize = 1;
-            EpsilonBorder = 0.0000005;
             EpsilonUp = 0.001;
-            EpsilonMin = EpsilonUp/32;
             
             _equation  = new TestTask(Y0);
 
@@ -108,6 +104,7 @@ namespace Lab6.ViewModel
                 else
                     { dx /= 2; }
 
+                AnaliticalChartData.Add(new ChartPoint(x, _equation.GetAnaliticalValue(x)));
                 NumericalChartData.Add(new ChartPoint(x, y));
 
                 xPrev = x;
