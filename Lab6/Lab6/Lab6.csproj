@@ -82,7 +82,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ChartPoint.cs" />
+    <Compile Include="ViewModel\FirstTaskViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SecondTaskViewModel.cs" />
+    <Compile Include="ViewModel\TestTaskViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\FirstTask.xaml.cs">
       <DependentUpon>FirstTask.xaml</DependentUpon>

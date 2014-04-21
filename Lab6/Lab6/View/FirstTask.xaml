@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:charting="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding FirstTask, Source={StaticResource Locator}}">
     <Grid>
         <charting:Chart Name="Charts" Grid.Column="0" Margin="3">
             <charting:LineSeries IndependentValuePath="X" DependentValuePath="Y" ItemsSource="{Binding ChartData}">
