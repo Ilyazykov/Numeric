@@ -30,7 +30,9 @@ namespace Lab5.ViewModel
             SimpsonsCommand = new RelayCommand(SimpsonsCommandExecutor);
 
             //Second
-            TerribleFunction = new GeneratedFunctions();
+            _terribleFunction = new GeneratedFunctions();
+            _numericFunction = new RectanleMethod(_terribleFunction);
+            _quadrature = new AdaptiveQuadrature(_numericFunction);
             FillInTheTable();
 
             GenerateFunctionCommand = new RelayCommand(GenerateFunctionCommandExecutor);
@@ -198,15 +200,52 @@ namespace Lab5.ViewModel
 
         #region Fields
 
-        public Function TerribleFunction { get; set; }
-        public Function IntegratedTerribleFunction { get; set; }
+        private GeneratedFunctions _terribleFunction;
+        private Function _numericFunction;
+        private AdaptiveQuadrature _quadrature;
+        private int _functionPartitions = 10;
+        public int FunctionPartitions
+        {
+            get { return _functionPartitions; }
+            set
+            {
+                _functionPartitions = value;
+                RaisePropertyChanged("FunctionPartitions");
+            }
+        }
+
+        private int _numberOfPointsTerribleFunction = 10;
+        public int NumberOfPointsTerribleFunction
+        {
+            get { return _numberOfPointsTerribleFunction; }
+            set
+            {
+                _numberOfPointsTerribleFunction = value;
+                RaisePropertyChanged("NumberOfPointsTerribleFunction");
+            }
+        }
+
+        private double _eps = 0.001;
+        public double Eps
+        {
+            get { return _eps; }
+            set
+            {
+                _eps = value;
+                RaisePropertyChanged("Eps");
+            }
+        }
 
         #endregion
 
         #region Properties
 
+        
+
         public ObservableCollection<DataForTable> Table { get; set; }
         public double Alpha { get; set; }
+
+        public ObservableCollection<ChartPoint> ChartTerribleFunction { get; set; }
 
         #endregion
 
@@ -215,27 +254,33 @@ namespace Lab5.ViewModel
         public RelayCommand GenerateFunctionCommand { get; set; }
         private void GenerateFunctionCommandExecutor()
         {
-            TerribleFunction = new GeneratedFunctions();
+            _terribleFunction = new GeneratedFunctions();
             FillInTheTable();
         }
 
         public RelayCommand SecondRectangleCommand { get; set; }
         private void SecondRectangleCommandExecutor()
         {
-            IntegratedTerribleFunction = new RectanleMethod(TerribleFunction);
+            _numericFunction = new RectanleMethod(_terribleFunction);
+            _quadrature = new AdaptiveQuadrature(_numericFunction);
+            GetTerribleChart(NumberOfPointsTerribleFunction);
         }
 
         public RelayCommand SecondTrapezoidalCommand { get; set; }
         private void SecondTrapezoidalCommandExecutor()
         {
-            IntegratedTerribleFunction = new TrapezoidalMethod(TerribleFunction);
+            _numericFunction = new TrapezoidalMethod(_terribleFunction);
+            _quadrature = new AdaptiveQuadrature(_numericFunction);
+            GetTerribleChart(NumberOfPointsTerribleFunction);
         }
 
         public RelayCommand SecondSimpsonsCommand { get; set; }
 
         private void SecondSimpsonsCommandExecutor()
         {
-            IntegratedTerribleFunction = new SimpsonsMethod(TerribleFunction);
+            _numericFunction = new SimpsonsMethod(_terribleFunction);
+            _quadrature = new AdaptiveQuadrature(_numericFunction);
+            GetTerribleChart(NumberOfPointsTerribleFunction);
         }
 
         #endregion
@@ -247,12 +292,31 @@ namespace Lab5.ViewModel
             Table = new ObservableCollection<DataForTable>();
             for (int i = 0; i < 14; i++)
             {
-                var temp = new DataForTable(TerribleFunction.A[i], TerribleFunction.B[i]);
+                var temp = new DataForTable(_terribleFunction.A[i], _terribleFunction.B[i]);
                 Table.Add(temp);
             }
-            Alpha = TerribleFunction.Alpha;
+            Alpha = _terribleFunction.Alpha;
             RaisePropertyChanged("Alpha");
             RaisePropertyChanged("Table");
+        }
+
+        private void GetTerribleChart(int stepNumber)
+        {
+            ChartTerribleFunction = new ObservableCollection<ChartPoint>();
+
+            var dx = (end - begin) / stepNumber;
+            for (int i = 0; i < stepNumber; i++)
+            {
+                int numberOfCalls = 0;
+
+                double x = begin + i * dx;
+                _quadrature.X = x;
+                double y = _quadrature.GetValue(-Math.PI/2, Math.PI/2, Eps, FunctionPartitions, ref numberOfCalls);
+                ChartTerribleFunction.Add(new ChartPoint(x, y));
+            }
+            //ChartData.Add(new ChartPoint(end, _function.GetValue(end)));
+
+            RaisePropertyChanged("ChartTerribleFunction");
         }
 
         #endregion

@@ -27,5 +27,10 @@ namespace Lab5.Model
         {
             throw new NotImplementedException();
         }
+
+        public override void ChangeX(double x)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

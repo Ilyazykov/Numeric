@@ -29,5 +29,10 @@ namespace Lab5.Model.Integrating
         {
             MyFunction = function;
         }
+
+        public override void ChangeX(double x)
+        {
+            MyFunction.ChangeX(x);
+        }
     }
 }

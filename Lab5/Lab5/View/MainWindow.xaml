@@ -95,7 +95,7 @@
 
                     <!--Charts-->
                     <charting:Chart Name="ChartsSecondTask" Grid.Column="0" Margin="3">
-                        <charting:LineSeries IndependentValuePath="X" DependentValuePath="Y"> <!--TODO binding -->
+                        <charting:LineSeries IndependentValuePath="X" DependentValuePath="Y" ItemsSource="{Binding ChartTerribleFunction}">
                             <charting:LineSeries.DataPointStyle>
                                 <Style TargetType="charting:LineDataPoint">
                                     <Setter Property="Opacity" Value="0"/>

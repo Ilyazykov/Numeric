@@ -103,6 +103,7 @@
     <Compile Include="Model\Functions\GeneratedFunctions.cs" />
     <Compile Include="Model\Functions\MyFunction.cs" />
     <Compile Include="Model\Functions\SecondOscillatingFunction.cs" />
+    <Compile Include="Model\Integrating\AdaptiveQuadrature.cs" />
     <Compile Include="Model\Integrating\IntegrateDecorator.cs" />
     <Compile Include="Model\Integrating\RectanleMethod.cs" />
     <Compile Include="Model\Integrating\SimpsonsMethod.cs" />
