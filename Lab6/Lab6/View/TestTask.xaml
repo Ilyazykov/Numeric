@@ -7,26 +7,33 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding TestTask, Source={StaticResource Locator}}">
-    <Grid>
-        <charting:Chart Name="Charts" Grid.Column="0" Margin="3">
-            <charting:LineSeries IndependentValuePath="X" DependentValuePath="Y" ItemsSource="{Binding ChartData}">
-                <charting:LineSeries.DataPointStyle>
-                    <Style TargetType="charting:LineDataPoint">
-                        <Setter Property="Opacity" Value="0"/>
-                        <Setter Property="Background" Value="Blue"/>
-                    </Style>
-                </charting:LineSeries.DataPointStyle>
-            </charting:LineSeries>
-            <charting:Chart.Axes>
-                <charting:LinearAxis
-                    Orientation="X"
-                    Title="X"
-                    ShowGridLines="True"/>
-                <charting:LinearAxis 
-                    Orientation="Y"
-                    Title="Y"
-                    ShowGridLines="True"/>
-            </charting:Chart.Axes>
-        </charting:Chart>
-    </Grid>
+    <TabControl>
+        <TabItem Header="График">
+            <charting:Chart Name="Charts" Margin="3">
+                <charting:LineSeries IndependentValuePath="X" DependentValuePath="Y" ItemsSource="{Binding ChartData}">
+                    <charting:LineSeries.DataPointStyle>
+                        <Style TargetType="charting:LineDataPoint">
+                            <Setter Property="Opacity" Value="0"/>
+                            <Setter Property="Background" Value="Blue"/>
+                        </Style>
+                    </charting:LineSeries.DataPointStyle>
+                </charting:LineSeries>
+                <charting:Chart.Axes>
+                    <charting:LinearAxis
+                        Orientation="X"
+                        Title="X"
+                        ShowGridLines="True"/>
+                    <charting:LinearAxis 
+                        Orientation="Y"
+                        Title="Y"
+                        ShowGridLines="True"/>
+                </charting:Chart.Axes>
+            </charting:Chart>
+        </TabItem>
+
+        <TabItem Header="Таблица">
+            <DataGrid ItemsSource="{Binding ResultTable}"/>
+        </TabItem>
+
+    </TabControl>
 </UserControl>

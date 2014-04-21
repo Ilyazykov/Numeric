@@ -82,6 +82,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ChartPoint.cs" />
+    <Compile Include="Model\DifferentialEquation\DiferentialEquation.cs" />
+    <Compile Include="Model\DifferentialEquation\FirstTask.cs" />
+    <Compile Include="Model\DifferentialEquation\TestTask.cs" />
+    <Compile Include="Model\MajorTableData.cs" />
+    <Compile Include="Model\TestTableData.cs" />
     <Compile Include="ViewModel\FirstTaskViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SecondTaskViewModel.cs" />
@@ -149,6 +154,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
