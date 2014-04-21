@@ -1,0 +1,23 @@
+﻿<Window x:Class="Lab6.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Lab6.View"
+        Title="MainWindow" Height="350" Width="525"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Тестовая задача">
+                <local:TestTask/>
+            </TabItem>
+            
+            <TabItem Header="Основная задача №1">
+                <local:FirstTask/>
+            </TabItem>
+            
+            <TabItem Header="Основная задача №2">
+                <local:SecondTask/>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

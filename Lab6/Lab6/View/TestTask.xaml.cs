@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Lab6
+namespace Lab6.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TestTask.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TestTask : UserControl
     {
-        public MainWindow()
+        public TestTask()
         {
             InitializeComponent();
         }
