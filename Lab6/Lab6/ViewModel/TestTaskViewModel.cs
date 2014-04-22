@@ -14,7 +14,19 @@ namespace Lab6.ViewModel
         public ObservableCollection<ChartPoint> AnaliticalChartData { get; set; }
         public ObservableCollection<ChartPoint> NumericalChartData { get; set; }
         public ObservableCollection<TestTableData> ResultTable { get; set; }
-        public double Y0 { get; set; }
+        
+        
+        private double _y0;
+        public double Y0
+        {
+            get { return _y0; }
+            set
+            {
+                _y0 = value;
+                _equation.Y0 = value;
+            }
+        }
+
         public int MaximumNumberOfIteration { get; set; }
         public double EpsilonUp { get; set; }
 
@@ -28,13 +40,13 @@ namespace Lab6.ViewModel
                 RaisePropertyChanged("IsFixedStep");
             }
         }
-        public double StepSize { get; set; }
 
+        public double StepSize { get; set; }
+        
         public RelayCommand СalculationCommand { get; set; }
         private void СalculationCommandExecutor()
         {
-            if (IsFixedStep) GetChartDataWithFixedStep();
-            else GetChartData();
+            GetTable();
             GetFakeTable();
         }
 
@@ -42,6 +54,8 @@ namespace Lab6.ViewModel
 
         public TestTaskViewModel()
         {
+            _equation = new TestTask(1);
+
             Y0 = 1;
             MaximumNumberOfIteration = 10;
             IsFixedStep = true;
@@ -57,87 +71,95 @@ namespace Lab6.ViewModel
 
         private void GetChartDataWithFixedStep()
         {
-            AnaliticalChartData = new ObservableCollection<ChartPoint>();
-            NumericalChartData = new ObservableCollection<ChartPoint>();
+            ResultTable = new ObservableCollection<TestTableData>();
 
             var dx = StepSize;
             double xPrev = 0;
             double yPrev = Y0;
+
+            ResultTable.Add(new TestTableData(0, Y0, Y0, 0, 0, dx, 0, 0, Y0, 0));
+
             for (int i = 0; i < MaximumNumberOfIteration; i++)
             {
                 double x = xPrev + dx;
                 double y = _equation.GetNumericalValue(x, xPrev, yPrev);
 
-                AnaliticalChartData.Add(new ChartPoint(x, _equation.GetAnaliticalValue(x)));
-                NumericalChartData.Add(new ChartPoint(x, y));
+                double x2 = xPrev + dx / 2;
+                double y2 = _equation.GetNumericalValue(x2, xPrev, yPrev);
+                y2 = _equation.GetNumericalValue(x, x2, y2);
+
+                double estimationOfLocalError = Math.Abs(y2 - y) / 15;
+
+                double u = _equation.GetAnaliticalValue(x);
+
+                ResultTable.Add(new TestTableData(x, y, y2, Math.Abs(y - y2), estimationOfLocalError, dx, 0, 0, u, Math.Abs(u - y)));
 
                 xPrev = x;
                 yPrev = y;
-
             }
-            RaisePropertyChanged("AnaliticalChartData");
-            RaisePropertyChanged("NumericalChartData");
+            RaisePropertyChanged("ResultTable");
         }
 
-        private void GetChartData()
+        private void GetTable()
         {
-            AnaliticalChartData = new ObservableCollection<ChartPoint>();
-            NumericalChartData = new ObservableCollection<ChartPoint>();
+            ResultTable = new ObservableCollection<TestTableData>();
 
             var dx = StepSize;
             double xPrev = 0;
             double yPrev = Y0;
-            for (int i = 0; i < MaximumNumberOfIteration; i++)
+
+            int c1 = 0;
+            int c2 = 0;
+            ResultTable.Add(new TestTableData(0,Y0,Y0,0,0,dx,0,0,Y0,0));
+
+            for (int i = 1; i < MaximumNumberOfIteration; i++)
             {
                 double x = xPrev + dx;
                 double y = _equation.GetNumericalValue(x, xPrev, yPrev);
 
                 double x2 = xPrev + dx/2;
                 double y2 = _equation.GetNumericalValue(x2, xPrev, yPrev);
+                y2 = _equation.GetNumericalValue(x, x2, y2);
 
                 double estimationOfLocalError = Math.Abs(y2 - y)/15;
 
-                if (estimationOfLocalError >= EpsilonUp/32 && estimationOfLocalError < EpsilonUp)
-                    { }
-                else if (estimationOfLocalError < EpsilonUp/32)
-                    { dx *= 2; }
-                else
-                    { dx /= 2; }
+                if (!IsFixedStep)
+                {
+                    if (estimationOfLocalError < EpsilonUp/32)
+                    {
+                        dx *= 2;
+                        c2++;
+                    }
+                    else if (estimationOfLocalError > EpsilonUp)
+                    {
+                        dx /= 2;
+                        c1++;
+                    }
+                }
 
-                AnaliticalChartData.Add(new ChartPoint(x, _equation.GetAnaliticalValue(x)));
-                NumericalChartData.Add(new ChartPoint(x, y));
+                double u = _equation.GetAnaliticalValue(x);
+                ResultTable.Add(new TestTableData(x, y, y2, Math.Abs(y-y2), estimationOfLocalError, dx, c1, c2, u, Math.Abs(u-y)));
 
                 xPrev = x;
                 yPrev = y;
 
             }
-            RaisePropertyChanged("AnaliticalChartData");
-            RaisePropertyChanged("NumericalChartData");
+            RaisePropertyChanged("ResultTable");
         }
 
         private void GetFakeTable()
         {
-            /*
-            ResultTable = new ObservableCollection<TestTableData>();
+            AnaliticalChartData = new ObservableCollection<ChartPoint>();
+            NumericalChartData = new ObservableCollection<ChartPoint>();
 
-            for (int i = 1; i < NumberOfPartitions; i++)
+            for (int i = 0; i < MaximumNumberOfIteration; i++)
             {
-                var temp = new TestTableData();
-                temp.X = NumericalChartData[i].X;
-                temp.V = NumericalChartData[i].Y;
-                //temp.V2 = NumericalChartData[i].Y;
-                //temp.ErrorVv2 = temp.V - temp.V2;
-                //temp.Ele =
-                temp.H = temp.X - AnaliticalChartData[i-1].X;
-                //temp.C1
-                //temp.C2
-                temp.U = AnaliticalChartData[i].Y;
-                temp.ErrorUv = temp.V - temp.U;
-
-                ResultTable.Add(temp);
+                AnaliticalChartData.Add(new ChartPoint(ResultTable[i].X, ResultTable[i].U));
+                NumericalChartData.Add(new ChartPoint(ResultTable[i].X, ResultTable[i].V));
             }
 
-            RaisePropertyChanged("ResultTable");*/
+            RaisePropertyChanged("AnaliticalChartData");
+            RaisePropertyChanged("NumericalChartData");
         }
     }
 }
