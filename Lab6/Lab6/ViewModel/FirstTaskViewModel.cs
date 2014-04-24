@@ -95,7 +95,6 @@ namespace Lab6.ViewModel
                     }
                     else if (estimationOfLocalError > EpsilonUp)
                     {
-                        y = y2; //TODO нужен ли?
                         dx /= 2;
                         c1++;
                     }

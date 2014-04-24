@@ -102,6 +102,8 @@
     <Compile Include="Model\ChartPoint.cs" />
     <Compile Include="Model\DifferentialEquation\DiferentialEquation.cs" />
     <Compile Include="Model\DifferentialEquation\FirstTask.cs" />
+    <Compile Include="Model\DifferentialEquation\SecondOrderDifferentialEquation.cs" />
+    <Compile Include="Model\DifferentialEquation\SecondTask.cs" />
     <Compile Include="Model\DifferentialEquation\TestTask.cs" />
     <Compile Include="Model\MajorTableData.cs" />
     <Compile Include="Model\TestTableData.cs" />
