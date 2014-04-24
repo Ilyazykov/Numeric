@@ -89,10 +89,12 @@ namespace Lab6.ViewModel
 
         public SecondTaskViewModel()
         {
-            _equation = new SecondTask(1,1,1,1);//TODO A and B at view
+            _equation = new SecondTask(1,0,1,1);//TODO A and B at view
 
             Y0 = 1;
             Y1 = 0;
+            A = 1;
+            B = 1;
             MaximumNumberOfIteration = 10;
             IsFixedStep = false;
             StepSize = 0.1;

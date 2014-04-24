@@ -46,17 +46,7 @@
 
             <TabItem Header="Фазовый портрет">
                 <charting:Chart Name="PhasePortrait" Margin="3">
-                    <charting:LineSeries Title="Numerical" IsTabStop="False"
-                                         IndependentValuePath="X" DependentValuePath="Y" 
-                                         ItemsSource="{Binding NumericalChartDataPhasePortrait}" 
-                                         PolylineStyle="{DynamicResource MyPolylineStyle}">
-                        <charting:LineSeries.DataPointStyle>
-                            <Style TargetType="charting:LineDataPoint">
-                                <Setter Property="Opacity" Value="1"/>
-                                <Setter Property="Background" Value="Red"/>
-                            </Style>
-                        </charting:LineSeries.DataPointStyle>
-                    </charting:LineSeries>
+                    <charting:ScatterSeries ItemsSource="{Binding NumericalChartDataPhasePortrait}" IndependentValuePath="X" DependentValuePath="Y"/>
                     <charting:Chart.Axes>
                         <charting:LinearAxis
                                 Orientation="X"
@@ -93,9 +83,14 @@
                                Minimum="0"
                                Margin="10,10,5,0"/>
 
-            <TextBlock Text="y0"
+            <TextBlock Text="y(0)"
                        Margin="10, 10, 10, 5"/>
             <xctk:DoubleUpDown Value="{Binding Y0}"
+                                Margin="10,0,5,0"/>
+
+            <TextBlock Text="y'(0)"
+                       Margin="10, 10, 10, 5"/>
+            <xctk:DoubleUpDown Value="{Binding Y1}"
                                 Margin="10,0,5,0"/>
 
             <TextBlock Text="E"
