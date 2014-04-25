@@ -15,7 +15,11 @@ namespace Lab6.ViewModel
         public ObservableCollection<ChartPoint> NumericalChartData { get; set; }
         public ObservableCollection<ChartPoint> NumericalChartDataPhasePortrait { get; set; }
         public ObservableCollection<MajorTableData> ResultTable { get; set; }
-        
+
+        public Result Res { get; set; }
+
+        public double RightBorder { get; set; }
+
         private List<double> _additionalInfo;
 
         private double _a;
@@ -79,10 +83,12 @@ namespace Lab6.ViewModel
         public double StepSize { get; set; }
 
         public RelayCommand СalculationCommand { get; set; }
+
         private void СalculationCommandExecutor()
         {
             GetTable();
             GetCharts();
+            GetRes();
         }
 
         private SecondOrderDifferentialEquation _equation;
@@ -99,6 +105,7 @@ namespace Lab6.ViewModel
             IsFixedStep = false;
             StepSize = 0.1;
             EpsilonUp = 0.001;
+            RightBorder = 5;
 
             СalculationCommandExecutor();
 
@@ -123,6 +130,7 @@ namespace Lab6.ViewModel
             for (int i = 1; i < MaximumNumberOfIteration; i++)
             {
                 double x = xPrev + dx;
+                if (x > RightBorder) break;
                 SecondOrderSolution y = _equation.GetNumericalValue(x, xPrev, yPrev, y1Prev);
 
                 double x2 = xPrev + dx / 2;
@@ -161,7 +169,7 @@ namespace Lab6.ViewModel
             NumericalChartData = new ObservableCollection<ChartPoint>();
             NumericalChartDataPhasePortrait = new ObservableCollection<ChartPoint>();
 
-            for (int i = 0; i < MaximumNumberOfIteration; i++)
+            for (int i = 0; i < ResultTable.Count; i++)
             {
                 if (double.IsInfinity(ResultTable[i].V)) break;
 
@@ -171,6 +179,33 @@ namespace Lab6.ViewModel
 
             RaisePropertyChanged("NumericalChartData");
             RaisePropertyChanged("NumericalChartDataPhasePortrait");
+        }
+
+        private void GetRes()
+        {
+            Res = new Result {MaxEle = 0, MaxStep = StepSize, MaxStepX = 0, MinStep = StepSize, MinStepX = 0};
+
+            foreach (var testTableData in ResultTable)
+            {
+                if (testTableData.Ele > Res.MaxEle) Res.MaxEle = testTableData.Ele;
+                if (testTableData.H > Res.MaxStep)
+                {
+                    Res.MaxStep = testTableData.H;
+                    Res.MaxErrorX = testTableData.X;
+                }
+                else if (testTableData.H < Res.MinStep)
+                {
+                    Res.MinStep = testTableData.H;
+                    Res.MinStepX = testTableData.X;
+                }
+            }
+
+            Res.DistanceToBorder = RightBorder - ResultTable[ResultTable.Count - 1].X;
+            Res.NumberOfStep = ResultTable.Count;
+            Res.StepDecrement = ResultTable[ResultTable.Count - 1].C1;
+            Res.StepIncrement = ResultTable[ResultTable.Count - 1].C2;
+
+            RaisePropertyChanged("Res");
         }
     }
 }

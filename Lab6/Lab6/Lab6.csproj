@@ -106,6 +106,7 @@
     <Compile Include="Model\DifferentialEquation\SecondTask.cs" />
     <Compile Include="Model\DifferentialEquation\TestTask.cs" />
     <Compile Include="Model\MajorTableData.cs" />
+    <Compile Include="Model\Result.cs" />
     <Compile Include="Model\TestTableData.cs" />
     <Compile Include="ViewModel\FirstTaskViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Lab6.Model;
@@ -11,6 +12,9 @@ namespace Lab6.ViewModel
     {
         public ObservableCollection<ChartPoint> NumericalChartData { get; set; }
         public ObservableCollection<MajorTableData> ResultTable { get; set; }
+        public Result Res { get; set; }
+
+        public double RightBorder { get; set; }
 
         private double _y0;
         public double Y0
@@ -40,10 +44,14 @@ namespace Lab6.ViewModel
         public double StepSize { get; set; }
 
         public RelayCommand СalculationCommand { get; set; }
+
+        
+
         private void СalculationCommandExecutor()
         {
             GetTable();
             GetCharts();
+            GetRes();
         }
 
         private DiferentialEquation _equation;
@@ -57,6 +65,8 @@ namespace Lab6.ViewModel
             IsFixedStep = false;
             StepSize = 0.1;
             EpsilonUp = 0.001;
+
+            RightBorder = 1;
 
             СalculationCommandExecutor();
 
@@ -78,6 +88,7 @@ namespace Lab6.ViewModel
             for (int i = 1; i < MaximumNumberOfIteration; i++)
             {
                 double x = xPrev + dx;
+                if (x > RightBorder) break;
                 double y = _equation.GetNumericalValue(x, xPrev, yPrev);
 
                 double x2 = xPrev + dx / 2;
@@ -112,15 +123,42 @@ namespace Lab6.ViewModel
         private void GetCharts()
         {
             NumericalChartData = new ObservableCollection<ChartPoint>();
-
-            for (int i = 0; i < MaximumNumberOfIteration; i++)
+            
+            foreach (MajorTableData t in ResultTable)
             {
-                if (double.IsInfinity(ResultTable[i].V)) break;
+                if (double.IsInfinity(t.V)) break;
 
-                NumericalChartData.Add(new ChartPoint(ResultTable[i].X, ResultTable[i].V));
+                NumericalChartData.Add(new ChartPoint(t.X, t.V));
             }
 
             RaisePropertyChanged("NumericalChartData");
+        }
+
+        private void GetRes()
+        {
+            Res = new Result {MaxEle = 0, MaxStep = StepSize, MaxStepX = 0, MinStep = StepSize, MinStepX = 0};
+
+            foreach (var testTableData in ResultTable)
+            {
+                if (testTableData.Ele > Res.MaxEle) Res.MaxEle = testTableData.Ele;
+                if (testTableData.H > Res.MaxStep)
+                {
+                    Res.MaxStep = testTableData.H;
+                    Res.MaxErrorX = testTableData.X;
+                }
+                else if (testTableData.H < Res.MinStep)
+                {
+                    Res.MinStep = testTableData.H;
+                    Res.MinStepX = testTableData.X;
+                }
+            }
+
+            Res.DistanceToBorder = RightBorder - ResultTable[ResultTable.Count - 1].X;
+            Res.NumberOfStep = ResultTable.Count;
+            Res.StepDecrement = ResultTable[ResultTable.Count - 1].C1;
+            Res.StepIncrement = ResultTable[ResultTable.Count - 1].C2;
+
+            RaisePropertyChanged("Res");
         }
     }
 }

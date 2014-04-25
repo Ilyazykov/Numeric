@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.ObjectModel;
+using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Lab6.Model;
@@ -14,6 +15,10 @@ namespace Lab6.ViewModel
         public ObservableCollection<ChartPoint> AnaliticalChartData { get; set; }
         public ObservableCollection<ChartPoint> NumericalChartData { get; set; }
         public ObservableCollection<TestTableData> ResultTable { get; set; }
+
+        public double RightBorder { get; set; }
+
+        public Result Res { get; set; } //TODO посчитать
         
         private double _y0;
         public double Y0
@@ -43,10 +48,13 @@ namespace Lab6.ViewModel
         public double StepSize { get; set; }
         
         public RelayCommand СalculationCommand { get; set; }
+
+
         private void СalculationCommandExecutor()
         {
             GetTable();
             GetCharts();
+            GetRes();
         }
 
         private DiferentialEquation _equation;
@@ -60,6 +68,7 @@ namespace Lab6.ViewModel
             IsFixedStep = false;
             StepSize = 1;
             EpsilonUp = 0.001;
+            RightBorder = 20.0;
 
             СalculationCommandExecutor();
 
@@ -81,6 +90,8 @@ namespace Lab6.ViewModel
             for (int i = 1; i < MaximumNumberOfIteration; i++)
             {
                 double x = xPrev + dx;
+                if (x>RightBorder) break;
+
                 double y = _equation.GetNumericalValue(x, xPrev, yPrev);
 
                 double x2 = xPrev + dx/2;
@@ -118,7 +129,7 @@ namespace Lab6.ViewModel
             AnaliticalChartData = new ObservableCollection<ChartPoint>();
             NumericalChartData = new ObservableCollection<ChartPoint>();
 
-            for (int i = 0; i < MaximumNumberOfIteration; i++)
+            for (int i = 0; i < ResultTable.Count; i++)
             {
                 AnaliticalChartData.Add(new ChartPoint(ResultTable[i].X, ResultTable[i].U));
                 NumericalChartData.Add(new ChartPoint(ResultTable[i].X, ResultTable[i].V));
@@ -126,6 +137,48 @@ namespace Lab6.ViewModel
 
             RaisePropertyChanged("AnaliticalChartData");
             RaisePropertyChanged("NumericalChartData");
+        }
+
+        private void GetRes()
+        {
+            Res = new Result
+            {
+                MaxEle = 0,
+                MaxStep = StepSize,
+                MaxStepX = 0,
+                MinStep = StepSize,
+                MinStepX = 0,
+                MaxError = 0,
+                MaxErrorX = 0
+            };
+
+            foreach (var testTableData in ResultTable)
+            {
+                if (testTableData.Ele > Res.MaxEle) Res.MaxEle = testTableData.Ele;
+                if (testTableData.H > Res.MaxStep)
+                {
+                    Res.MaxStep = testTableData.H;
+                    Res.MaxErrorX = testTableData.X;
+                }
+                else if (testTableData.H < Res.MinStep)
+                {
+                    Res.MinStep = testTableData.H;
+                    Res.MinStepX = testTableData.X;
+                }
+
+                if (Math.Abs(testTableData.U - testTableData.V) > Res.MaxError)
+                {
+                    Res.MaxError = Math.Abs(testTableData.U - testTableData.V);
+                    Res.MaxErrorX = testTableData.X;
+                }
+            }
+
+            Res.DistanceToBorder = RightBorder - ResultTable[ResultTable.Count - 1].X;
+            Res.NumberOfStep = ResultTable.Count;
+            Res.StepDecrement = ResultTable[ResultTable.Count - 1].C1;
+            Res.StepIncrement = ResultTable[ResultTable.Count - 1].C2;
+
+            RaisePropertyChanged("Res");
         }
     }
 }

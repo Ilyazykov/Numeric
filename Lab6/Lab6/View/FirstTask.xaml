@@ -38,9 +38,62 @@
             </TabItem>
 
             <TabItem Header="Таблица">
-                <DataGrid ItemsSource="{Binding ResultTable}"/>
-            </TabItem>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid ItemsSource="{Binding ResultTable}" Grid.Column="0"/>
+                    <StackPanel Grid.Column="1">
 
+                        <TextBlock Text="n ="
+                           Margin="10,10,5,0"/>
+                        <TextBlock Text="{Binding Res.NumberOfStep}"
+                           Margin="10,0,5,0"/>
+
+                        <TextBlock Text="b-xN ="
+                           Margin="10,10,10,5"/>
+                        <TextBlock Text="{Binding Res.DistanceToBorder}"
+                                   Margin="10,0,5,0"/>
+
+                        <TextBlock Text="max|ОЛП| ="
+                                   Margin="10,10,10,5"/>
+                        <TextBlock Text="{Binding Res.MaxEle}"
+                                   Margin="10,0,5,0"/>
+
+                        <TextBlock Text="Удвоения шага:"
+                                   Margin="10,10,10,5"/>
+                        <TextBlock Text="{Binding Res.StepIncrement}"
+                                   Margin="10,0,5,0"/>
+
+                        <TextBlock Text="Деление шага"
+                                   Margin="10,10,10,5"/>
+                        <TextBlock Text="{Binding Res.StepDecrement}"
+                                   Margin="10,0,5,0"/>
+
+                        <TextBlock Text="maxH"
+                                   Margin="10,10,10,5"/>
+                        <TextBlock Text="{Binding Res.MaxStep}"
+                                   Margin="10,0,5,0"/>
+
+                        <TextBlock Text="при x="
+                                   Margin="10,10,10,5"/>
+                        <TextBlock Text="{Binding Res.MaxStepX}"
+                                   Margin="10,0,5,0"/>
+
+                        <TextBlock Text="minH"
+                                   Margin="10,10,10,5"/>
+                        <TextBlock Text="{Binding Res.MinStep}"
+                                   Margin="10,0,5,0"/>
+
+                        <TextBlock Text="при x="
+                                   Margin="10,10,10,5"/>
+                        <TextBlock Text="{Binding Res.MinStepX}"
+                                   Margin="10,0,5,0"/>
+
+                    </StackPanel>
+                </Grid>
+            </TabItem>
         </TabControl>
 
         <StackPanel Grid.Column="1">
@@ -68,6 +121,12 @@
             <TextBlock Text="E"
                        Margin="10, 10, 10, 5"/>
             <xctk:DoubleUpDown Value="{Binding EpsilonUp}" 
+                                Minimum="0"
+                                Margin="10,0,5,0"/>
+
+            <TextBlock Text="b"
+                       Margin="10, 10, 10, 5"/>
+            <xctk:DoubleUpDown Value="{Binding RightBorder}" 
                                 Minimum="0"
                                 Margin="10,0,5,0"/>
 
