@@ -214,7 +214,7 @@ namespace Lab5.ViewModel
         public ObservableCollection<ChartPoint> ChartTerribleFunction { get; set; }
         public ObservableCollection<ChartPoint> ChartComplexity { get; set; }
 
-        private int _functionPartitions = 200;
+        private int _functionPartitions = 2;
         public int FunctionPartitions
         {
             get { return _functionPartitions; }
