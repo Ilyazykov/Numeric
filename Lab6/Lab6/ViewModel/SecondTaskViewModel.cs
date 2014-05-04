@@ -146,10 +146,20 @@ namespace Lab6.ViewModel
                         dx *= 2;
                         c2++;
                     }
-                    else if (estimationOfLocalError > EpsilonUp)
+                    else while (estimationOfLocalError > EpsilonUp)
                     {
                         dx /= 2;
                         c1++;
+
+                        x = xPrev + dx;
+
+                        y = _equation.GetNumericalValue(x, xPrev, yPrev, y1Prev);
+
+                        x2 = xPrev + dx / 2;
+                        y2 = _equation.GetNumericalValue(x2, xPrev, yPrev, y1Prev);
+                        y2 = _equation.GetNumericalValue(x, x2, y2.Y, y2.Y1);
+
+                        estimationOfLocalError = Math.Abs(y2.Y - y.Y) / 15;
                     }
                 }
 
