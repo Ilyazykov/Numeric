@@ -43,11 +43,11 @@ namespace Lab6.Model.DifferentialEquation
             double k1 = F1(xPrev, yPrev, y1Prev);
             double m1 = F2(xPrev, yPrev, y1Prev);
 
-            double k2 = F1(xPrev + dx / 2, yPrev + dx * k1 / 2, y1Prev + dx *m1 / 2);
+            double k2 = F1(xPrev + dx / 2, yPrev + dx * k1 / 2, y1Prev + dx * m1 / 2);
             double m2 = F2(xPrev + dx / 2, yPrev + dx * k1 / 2, y1Prev + dx * m1 / 2);
 
             double k3 = F1(xPrev + dx / 2, yPrev + dx * k2 / 2, y1Prev + dx * m2 / 2);
-            double m3 = F2(xPrev + dx / 2, yPrev + dx * k1 / 2, y1Prev + dx * m1 / 2);
+            double m3 = F2(xPrev + dx / 2, yPrev + dx * k2 / 2, y1Prev + dx * m2 / 2);
 
             double k4 = F1(xPrev + dx / 2, yPrev + dx * k3, y1Prev + dx * m3);
             double m4 = F2(xPrev + dx / 2, yPrev + dx * k3, y1Prev + dx * m3);
